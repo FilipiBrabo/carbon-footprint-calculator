@@ -1,7 +1,7 @@
 import { TRPCError } from "@trpc/server";
 import { describe, expect, test } from "vitest";
 import { EMISSION_FACTORS } from "../emission-factors";
-import { calculateHousingEnergy } from "./housing-energy";
+import { calculateHousingEnergyFootprint } from "./housing-energy";
 
 describe("calculateHousingEnergy", () => {
   test("should calculate electricity consumption correctly", () => {
@@ -13,7 +13,7 @@ describe("calculateHousingEnergy", () => {
       },
     };
 
-    const result = calculateHousingEnergy(input, EMISSION_FACTORS);
+    const result = calculateHousingEnergyFootprint(input, EMISSION_FACTORS);
 
     const expected = 100 * EMISSION_FACTORS.electricity.kWh * 12;
     expect(result).toBe(expected);
@@ -28,7 +28,7 @@ describe("calculateHousingEnergy", () => {
       },
     };
 
-    const result = calculateHousingEnergy(input, EMISSION_FACTORS);
+    const result = calculateHousingEnergyFootprint(input, EMISSION_FACTORS);
 
     const expected = 50 * EMISSION_FACTORS.naturalGas.therm * 1;
     expect(result).toBe(expected);
@@ -43,7 +43,7 @@ describe("calculateHousingEnergy", () => {
       },
     } as const;
 
-    const result = calculateHousingEnergy(input, EMISSION_FACTORS);
+    const result = calculateHousingEnergyFootprint(input, EMISSION_FACTORS);
 
     // 25 gallon * 10.21 kg CO2e/gallon * 12 (monthly to yearly)
     const expected = 25 * EMISSION_FACTORS.fuelOil.gallon * 12;
@@ -60,7 +60,10 @@ describe("calculateHousingEnergy", () => {
         },
       };
 
-      const result = calculateHousingEnergy(monthlyInput, EMISSION_FACTORS);
+      const result = calculateHousingEnergyFootprint(
+        monthlyInput,
+        EMISSION_FACTORS,
+      );
       const expected = 100 * EMISSION_FACTORS.electricity.kWh * 12;
       expect(result).toBe(expected);
     });
@@ -74,7 +77,10 @@ describe("calculateHousingEnergy", () => {
         },
       };
 
-      const result = calculateHousingEnergy(yearlyInput, EMISSION_FACTORS);
+      const result = calculateHousingEnergyFootprint(
+        yearlyInput,
+        EMISSION_FACTORS,
+      );
       const expected = 100 * EMISSION_FACTORS.electricity.kWh * 1;
       expect(result).toBe(expected);
     });
@@ -104,7 +110,7 @@ describe("calculateHousingEnergy", () => {
       },
     };
 
-    const result = calculateHousingEnergy(input, EMISSION_FACTORS);
+    const result = calculateHousingEnergyFootprint(input, EMISSION_FACTORS);
 
     const expectedElectricity = 100 * EMISSION_FACTORS.electricity.kWh * 12;
     const expectedNaturalGas = 20 * EMISSION_FACTORS.naturalGas.therm * 1;
@@ -150,7 +156,7 @@ describe("calculateHousingEnergy", () => {
       },
     };
 
-    const result = calculateHousingEnergy(input, EMISSION_FACTORS);
+    const result = calculateHousingEnergyFootprint(input, EMISSION_FACTORS);
     expect(result).toBe(0);
   });
 
@@ -163,11 +169,11 @@ describe("calculateHousingEnergy", () => {
       },
     };
 
-    expect(() => calculateHousingEnergy(input, EMISSION_FACTORS)).toThrow(
-      TRPCError,
-    );
-    expect(() => calculateHousingEnergy(input, EMISSION_FACTORS)).toThrow(
-      "Emission factor not found",
-    );
+    expect(() =>
+      calculateHousingEnergyFootprint(input, EMISSION_FACTORS),
+    ).toThrow(TRPCError);
+    expect(() =>
+      calculateHousingEnergyFootprint(input, EMISSION_FACTORS),
+    ).toThrow("Emission factor not found");
   });
 });

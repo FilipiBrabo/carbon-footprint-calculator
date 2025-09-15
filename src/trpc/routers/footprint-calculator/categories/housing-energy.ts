@@ -5,12 +5,12 @@ import type { EMISSION_FACTORS } from "../emission-factors";
 /**
  * Calculates the footprint for the housing category and return the total yearly footprint
  */
-export function calculateHousingEnergy(
+export function calculateHousingEnergyFootprint(
   input: RouterInput["footprintCalculator"]["calculate"]["housingEnergy"],
   emissionFactors: typeof EMISSION_FACTORS,
 ) {
   // Iterate over every subcategory of the housing category and calculate the footprint
-  // Note: Not sure if this is the best approach, since in the real world each subcategory could have their own
+  // Note: Probably not the best approach, since in the real world each subcategory could have their own
   // unique ways of calculating the footprint, instead of a simple multiplication by the emission factor
   // For simplicity, I've decided to use the same approach for all subcategories
   return Object.entries(input).reduce((total, [category, data]) => {
