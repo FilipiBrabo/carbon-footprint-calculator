@@ -16,7 +16,8 @@ describe("calculateHousingEnergy", () => {
     const result = calculateHousingEnergyFootprint(input, EMISSION_FACTORS);
 
     const expected = 100 * EMISSION_FACTORS.electricity.kWh * 12;
-    expect(result).toBe(expected);
+    expect(result.totalKgCO2e).toBe(expected);
+    expect(result.bySubcategory.electricity).toBe(expected);
   });
 
   test("should calculate natural gas consumption correctly", () => {
@@ -31,7 +32,8 @@ describe("calculateHousingEnergy", () => {
     const result = calculateHousingEnergyFootprint(input, EMISSION_FACTORS);
 
     const expected = 50 * EMISSION_FACTORS.naturalGas.therm * 1;
-    expect(result).toBe(expected);
+    expect(result.totalKgCO2e).toBe(expected);
+    expect(result.bySubcategory.naturalGas).toBe(expected);
   });
 
   test("should calculate fuel oil consumption correctly", () => {
@@ -47,7 +49,8 @@ describe("calculateHousingEnergy", () => {
 
     // 25 gallon * 10.21 kg CO2e/gallon * 12 (monthly to yearly)
     const expected = 25 * EMISSION_FACTORS.fuelOil.gallon * 12;
-    expect(result).toBe(expected);
+    expect(result.totalKgCO2e).toBe(expected);
+    expect(result.bySubcategory.fuelOil).toBe(expected);
   });
 
   describe("monthly vs yearly calculations", () => {
@@ -65,7 +68,7 @@ describe("calculateHousingEnergy", () => {
         EMISSION_FACTORS,
       );
       const expected = 100 * EMISSION_FACTORS.electricity.kWh * 12;
-      expect(result).toBe(expected);
+      expect(result.totalKgCO2e).toBe(expected);
     });
 
     test("should not multiply by 12 for yearly values", () => {
@@ -82,7 +85,7 @@ describe("calculateHousingEnergy", () => {
         EMISSION_FACTORS,
       );
       const expected = 100 * EMISSION_FACTORS.electricity.kWh * 1;
-      expect(result).toBe(expected);
+      expect(result.totalKgCO2e).toBe(expected);
     });
   });
 
@@ -119,7 +122,13 @@ describe("calculateHousingEnergy", () => {
 
     const expected =
       expectedElectricity + expectedNaturalGas + expectedLpg + expectedWaste;
-    expect(result).toBe(expected);
+    expect(result.totalKgCO2e).toBe(expected);
+    expect(result.bySubcategory).toMatchObject({
+      electricity: expectedElectricity,
+      naturalGas: expectedNaturalGas,
+      lpg: expectedLpg,
+      waste: expectedWaste,
+    });
   });
 
   test("should return 0 when all values are 0", () => {
@@ -157,7 +166,7 @@ describe("calculateHousingEnergy", () => {
     };
 
     const result = calculateHousingEnergyFootprint(input, EMISSION_FACTORS);
-    expect(result).toBe(0);
+    expect(result.totalKgCO2e).toBe(0);
   });
 
   test("should throw TRPCError when emission factor is not found", () => {

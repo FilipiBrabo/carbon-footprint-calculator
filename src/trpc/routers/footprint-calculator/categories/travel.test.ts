@@ -16,7 +16,8 @@ describe("calculateTravelFootprint", () => {
     const result = calculateTravelFootprint(input, EMISSION_FACTORS);
 
     const expected = 100 * EMISSION_FACTORS.car.miles * 12;
-    expect(result).toBe(expected);
+    expect(result.totalKgCO2e).toBe(expected);
+    expect(result.bySubcategory.car).toBe(expected);
   });
 
   test("should calculate bus footprint correctly", () => {
@@ -31,7 +32,8 @@ describe("calculateTravelFootprint", () => {
     const result = calculateTravelFootprint(input, EMISSION_FACTORS);
 
     const expected = 50 * EMISSION_FACTORS.bus.km * 1;
-    expect(result).toBe(expected);
+    expect(result.totalKgCO2e).toBe(expected);
+    expect(result.bySubcategory.bus).toBe(expected);
   });
 
   test("should calculate metro footprint correctly", () => {
@@ -46,7 +48,8 @@ describe("calculateTravelFootprint", () => {
     const result = calculateTravelFootprint(input, EMISSION_FACTORS);
 
     const expected = 25 * EMISSION_FACTORS.metro.miles * 12;
-    expect(result).toBe(expected);
+    expect(result.totalKgCO2e).toBe(expected);
+    expect(result.bySubcategory.metro).toBe(expected);
   });
 
   test("should calculate rail footprint correctly", () => {
@@ -61,7 +64,8 @@ describe("calculateTravelFootprint", () => {
     const result = calculateTravelFootprint(input, EMISSION_FACTORS);
 
     const expected = 75 * EMISSION_FACTORS.rail.km * 1;
-    expect(result).toBe(expected);
+    expect(result.totalKgCO2e).toBe(expected);
+    expect(result.bySubcategory.rail).toBe(expected);
   });
 
   test("should calculate flight footprint correctly", () => {
@@ -76,7 +80,8 @@ describe("calculateTravelFootprint", () => {
     const result = calculateTravelFootprint(input, EMISSION_FACTORS);
 
     const expected = 1000 * EMISSION_FACTORS.flight.miles * 12;
-    expect(result).toBe(expected);
+    expect(result.totalKgCO2e).toBe(expected);
+    expect(result.bySubcategory.flight).toBe(expected);
   });
 
   describe("monthly vs yearly calculations", () => {
@@ -91,7 +96,7 @@ describe("calculateTravelFootprint", () => {
 
       const result = calculateTravelFootprint(monthlyInput, EMISSION_FACTORS);
       const expected = 100 * EMISSION_FACTORS.car.miles * 12;
-      expect(result).toBe(expected);
+      expect(result.totalKgCO2e).toBe(expected);
     });
 
     test("should not multiply by 12 for yearly values", () => {
@@ -105,7 +110,7 @@ describe("calculateTravelFootprint", () => {
 
       const result = calculateTravelFootprint(yearlyInput, EMISSION_FACTORS);
       const expected = 100 * EMISSION_FACTORS.car.miles * 1;
-      expect(result).toBe(expected);
+      expect(result.totalKgCO2e).toBe(expected);
     });
   });
 
@@ -148,7 +153,14 @@ describe("calculateTravelFootprint", () => {
 
     const expected =
       expectedCar + expectedBus + expectedMetro + expectedRail + expectedFlight;
-    expect(result).toBe(expected);
+    expect(result.totalKgCO2e).toBe(expected);
+    expect(result.bySubcategory).toMatchObject({
+      car: expectedCar,
+      bus: expectedBus,
+      metro: expectedMetro,
+      rail: expectedRail,
+      flight: expectedFlight,
+    });
   });
 
   test("should handle mixed units correctly", () => {
@@ -170,7 +182,11 @@ describe("calculateTravelFootprint", () => {
     const expectedCar = 100 * EMISSION_FACTORS.car.km * 12;
     const expectedBus = 50 * EMISSION_FACTORS.bus.miles * 1;
     const expected = expectedCar + expectedBus;
-    expect(result).toBe(expected);
+    expect(result.totalKgCO2e).toBe(expected);
+    expect(result.bySubcategory).toMatchObject({
+      car: expectedCar,
+      bus: expectedBus,
+    });
   });
 
   test("should return 0 when all values are 0", () => {
@@ -203,14 +219,14 @@ describe("calculateTravelFootprint", () => {
     };
 
     const result = calculateTravelFootprint(input, EMISSION_FACTORS);
-    expect(result).toBe(0);
+    expect(result.totalKgCO2e).toBe(0);
   });
 
   test("should return 0 when no travel categories are provided", () => {
     const input = {};
 
     const result = calculateTravelFootprint(input, EMISSION_FACTORS);
-    expect(result).toBe(0);
+    expect(result.totalKgCO2e).toBe(0);
   });
 
   test("should skip undefined categories", () => {
@@ -233,7 +249,7 @@ describe("calculateTravelFootprint", () => {
     const expectedCar = 100 * EMISSION_FACTORS.car.miles * 12;
     const expectedMetro = 50 * EMISSION_FACTORS.metro.km * 1;
     const expected = expectedCar + expectedMetro;
-    expect(result).toBe(expected);
+    expect(result.totalKgCO2e).toBe(expected);
   });
 
   test("should throw TRPCError when emission factor is not found", () => {

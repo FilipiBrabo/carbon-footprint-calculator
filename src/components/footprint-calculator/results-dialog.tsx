@@ -1,13 +1,6 @@
 import { useState } from "react";
-import { Label, Pie, PieChart } from "recharts";
-import {
-  type ChartConfig,
-  ChartContainer,
-  ChartLegend,
-  ChartLegendContent,
-  ChartTooltip,
-  ChartTooltipContent,
-} from "@/components/ui/chart";
+import { CategoryPieChart } from "@/components/footprint-calculator/category-pie-chart";
+import { SubcategoryChart } from "@/components/footprint-calculator/subcategory-bar-chart";
 import {
   Dialog,
   DialogContent,
@@ -43,45 +36,26 @@ export function useResultsDialog() {
   };
 }
 
+const categoryLabels = {
+  housingEnergy: "Housing Energy",
+  travel: "Travel",
+};
+
 type Props = {
   open: boolean;
   setOpen: (open: boolean) => void;
   results: Results | null;
 };
 
-const chartConfig = {
-  value: {
-    label: "kgCO2e",
-  },
-  housingEnergy: {
-    label: "Housing Energy",
-    color: "#34d399",
-  },
-  travel: {
-    label: "Travel",
-    color: "#f87171",
-  },
-} satisfies ChartConfig;
-
 function ResultsDialog({ open, setOpen, results }: Props) {
   const [viewMode, setViewMode] = useState<"monthly" | "yearly">("yearly");
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 
-  const chartData = Object.entries(results?.byCategory || {}).map(
-    ([key, value]) => ({
-      label: key,
-      value: value / (viewMode === "monthly" ? 12 : 1),
-      fill: `var(--color-${key})`,
-    }),
-  );
-
-  const totalKgCO2e =
-    viewMode === "monthly"
-      ? (results?.totalKgCO2e ?? 0) / 12
-      : (results?.totalKgCO2e ?? 0);
+  const totalKgCO2e = results?.totalKgCO2e ?? 0;
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogContent className="sm:max-w-2xl">
+      <DialogContent className="sm:max-w-2xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>Results</DialogTitle>
           <DialogDescription>
@@ -89,72 +63,70 @@ function ResultsDialog({ open, setOpen, results }: Props) {
           </DialogDescription>
         </DialogHeader>
 
-        <div className="relative">
-          <Select
-            value={viewMode}
-            onValueChange={(value) =>
-              setViewMode(value as "monthly" | "yearly")
+        <div>
+          <div className="flex items-center justify-between">
+            <h3 className="text-lg font-semibold">
+              Overall Emissions by Category
+            </h3>
+
+            <Select
+              value={viewMode}
+              onValueChange={(value) =>
+                setViewMode(value as "monthly" | "yearly")
+              }
+            >
+              <SelectTrigger>
+                <SelectValue>
+                  {viewMode.charAt(0).toUpperCase() + viewMode.slice(1)}
+                </SelectValue>
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="monthly">Monthly</SelectItem>
+                <SelectItem value="yearly">Yearly</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <CategoryPieChart
+            byCategory={results?.byCategory || {}}
+            totalKgCO2e={totalKgCO2e}
+            viewMode={viewMode}
+            onSelect={(key) =>
+              setSelectedCategory((prev) => (prev === key ? null : key))
             }
-          >
-            <SelectTrigger className="absolute top-0 right-0">
-              <SelectValue>
-                {viewMode.charAt(0).toUpperCase() + viewMode.slice(1)}
-              </SelectValue>
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="monthly">Monthly</SelectItem>
-              <SelectItem value="yearly">Yearly</SelectItem>
-            </SelectContent>
-          </Select>
-          <ChartContainer
-            config={chartConfig}
-            className="mx-auto aspect-square w-full max-w-[320px]"
-          >
-            <PieChart>
-              <ChartTooltip
-                cursor={false}
-                content={<ChartTooltipContent hideLabel />}
+          />
+        </div>
+
+        <div className="mt-8">
+          {!selectedCategory && (
+            <p className="text-sm text-muted-foreground">
+              Click on a category above to see its breakdown.
+            </p>
+          )}
+
+          {selectedCategory && (
+            <div className="space-y-4">
+              <div className="flex items-center justify-between">
+                <div className="text-lg font-semibold capitalize">
+                  {categoryLabels[
+                    selectedCategory as keyof typeof categoryLabels
+                  ] ?? selectedCategory}
+                </div>
+                <button
+                  type="button"
+                  className="text-sm text-primary underline underline-offset-2"
+                  onClick={() => setSelectedCategory(null)}
+                >
+                  Clear
+                </button>
+              </div>
+              <SubcategoryChart
+                subcategories={
+                  results?.byCategory?.[selectedCategory]?.bySubcategory || {}
+                }
+                viewMode={viewMode}
               />
-              <ChartLegend content={<ChartLegendContent />} />
-              <Pie
-                data={chartData}
-                dataKey="value"
-                nameKey="label"
-                innerRadius={90}
-                strokeWidth={20}
-              >
-                <Label
-                  content={({ viewBox }) => {
-                    if (viewBox && "cx" in viewBox && "cy" in viewBox) {
-                      return (
-                        <text
-                          x={viewBox.cx}
-                          y={viewBox.cy}
-                          textAnchor="middle"
-                          dominantBaseline="middle"
-                        >
-                          <tspan
-                            x={viewBox.cx}
-                            y={viewBox.cy}
-                            className="fill-foreground text-3xl font-bold"
-                          >
-                            {totalKgCO2e.toFixed(2)}
-                          </tspan>
-                          <tspan
-                            x={viewBox.cx}
-                            y={(viewBox.cy || 0) + 24}
-                            className="fill-muted-foreground"
-                          >
-                            kgCO2e/{viewMode === "monthly" ? "month" : "year"}
-                          </tspan>
-                        </text>
-                      );
-                    }
-                  }}
-                />
-              </Pie>
-            </PieChart>
-          </ChartContainer>
+            </div>
+          )}
         </div>
       </DialogContent>
     </Dialog>

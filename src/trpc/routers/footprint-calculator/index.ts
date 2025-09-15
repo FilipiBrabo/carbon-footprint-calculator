@@ -14,7 +14,10 @@ export const footprintCalculatorRouter = router({
       }),
     )
     .mutation(({ input }) => {
-      const results: Record<string, number> = {};
+      const results: Record<
+        string,
+        { totalKgCO2e: number; bySubcategory: Record<string, number> }
+      > = {};
       let totalResult = 0;
 
       // The for loop below makes us looses the typing of the input keys
@@ -31,7 +34,7 @@ export const footprintCalculatorRouter = router({
             EMISSION_FACTORS,
           );
           results[categoryName] = categoryResult;
-          totalResult += categoryResult;
+          totalResult += categoryResult.totalKgCO2e;
         }
       }
 
