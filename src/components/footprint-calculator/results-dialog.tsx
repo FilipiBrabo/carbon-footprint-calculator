@@ -49,7 +49,8 @@ type Props = {
 
 function ResultsDialog({ open, setOpen, results }: Props) {
   const [viewMode, setViewMode] = useState<"monthly" | "yearly">("yearly");
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [selectedCategory, setSelectedCategory] =
+    useState<string>("housingEnergy");
 
   const totalKgCO2e = results?.totalKgCO2e ?? 0;
 
@@ -90,9 +91,7 @@ function ResultsDialog({ open, setOpen, results }: Props) {
             byCategory={results?.byCategory || {}}
             totalKgCO2e={totalKgCO2e}
             viewMode={viewMode}
-            onSelect={(key) =>
-              setSelectedCategory((prev) => (prev === key ? null : key))
-            }
+            onSelect={(key) => setSelectedCategory(key)}
           />
         </div>
 
@@ -105,19 +104,16 @@ function ResultsDialog({ open, setOpen, results }: Props) {
 
           {selectedCategory && (
             <div className="space-y-4">
-              <div className="flex items-center justify-between">
-                <div className="text-lg font-semibold capitalize">
+              <div>
+                <h3 className="text-lg font-semibold capitalize">
                   {categoryLabels[
                     selectedCategory as keyof typeof categoryLabels
                   ] ?? selectedCategory}
-                </div>
-                <button
-                  type="button"
-                  className="text-sm text-primary underline underline-offset-2"
-                  onClick={() => setSelectedCategory(null)}
-                >
-                  Clear
-                </button>
+                </h3>
+
+                <p className="text-sm text-muted-foreground">
+                  Click on a category above to see its breakdown.
+                </p>
               </div>
               <SubcategoryChart
                 subcategories={
