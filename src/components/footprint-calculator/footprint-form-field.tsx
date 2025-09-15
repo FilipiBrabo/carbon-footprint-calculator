@@ -44,6 +44,7 @@ export function FootprintFormField({
                   {...field}
                   type="number"
                   value={field.value}
+                  min={0}
                   onChange={(e) => field.onChange(Number(e.target.value))}
                 />
               </FormControl>
