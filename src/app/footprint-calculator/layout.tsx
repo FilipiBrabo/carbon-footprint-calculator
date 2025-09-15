@@ -8,6 +8,10 @@ export default function Layout({
   return (
     <div className="md:max-w-lg mx-auto space-y-4 p-4">
       <h1 className="text-2xl font-bold">Carbon Footprint Calculator</h1>
+      <p className="text-sm text-muted-foreground">
+        Estimate your carbon footprint by entering your household energy and
+        transportation details.
+      </p>
       <FootprintCalculatorStoreProvider>
         <Suspense
           // TODO: better loading state UI
