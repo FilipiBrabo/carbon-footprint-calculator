@@ -17,8 +17,13 @@ export const footprintCalculatorRouter = router({
       const results: Record<string, number> = {};
       let totalResult = 0;
 
+      // The for loop below makes us looses the typing of the input keys
+      // This is a workaround so we can cast the categoryName to the correct type
+      type Categories = keyof typeof input;
+
       for (const [categoryName, categoryData] of Object.entries(input)) {
-        const footprintCalculator = CATEGORY_REGISTRY[categoryName];
+        const footprintCalculator =
+          CATEGORY_REGISTRY[categoryName as Categories];
 
         if (footprintCalculator && categoryData) {
           const categoryResult = footprintCalculator(
