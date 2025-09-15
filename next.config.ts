@@ -5,7 +5,7 @@ const nextConfig: NextConfig = {
   redirects: async () => [
     {
       source: "/",
-      destination: "/footprint-calculator/home-energy",
+      destination: "/footprint-calculator",
       permanent: true,
     },
   ],
