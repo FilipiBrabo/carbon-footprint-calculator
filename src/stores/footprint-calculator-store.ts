@@ -25,7 +25,7 @@ export type FootprintCalculatorState = {
   };
 };
 
-export type CounterActions = {
+export type FootprintCalculatorActions = {
   setHousingEnergy: (
     housingEnergy: FootprintCalculatorState["housingEnergy"],
   ) => void;
@@ -33,7 +33,7 @@ export type CounterActions = {
 };
 
 export type FootprintCalculatorStore = FootprintCalculatorState &
-  CounterActions;
+  FootprintCalculatorActions;
 
 export const defaultInitState: FootprintCalculatorState = {
   housingEnergy: {
