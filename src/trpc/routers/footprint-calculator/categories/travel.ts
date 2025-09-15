@@ -1,5 +1,6 @@
 import { TRPCError } from "@trpc/server";
-import type { RouterInput } from "../../_app";
+import type z from "zod";
+import type { travelSchema } from "@/schemas/travel";
 import type { CategoryFootprintResult } from "../category-registry";
 import type { EMISSION_FACTORS } from "../emission-factors";
 
@@ -7,7 +8,7 @@ import type { EMISSION_FACTORS } from "../emission-factors";
  * Calculates the footprint for the travel category and return the total yearly footprint
  */
 export function calculateTravelFootprint(
-  input: RouterInput["footprintCalculator"]["calculate"]["travel"],
+  input: z.output<typeof travelSchema>,
   emissionFactors: typeof EMISSION_FACTORS,
 ): CategoryFootprintResult {
   // Iterate over every subcategory of the travel category and calculate the footprint

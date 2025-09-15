@@ -32,6 +32,11 @@ export default function Page() {
 
   const { open: showResults, dialog } = useResultsDialog();
 
+  const isSubmitDisabled =
+    (Object.values(housingEnergy).every((data) => data.value === "") &&
+      Object.values(travel).every((data) => data.value === "")) ||
+    calculateFootprint.isPending;
+
   return (
     <div className="space-y-8">
       {dialog}
@@ -61,7 +66,7 @@ export default function Page() {
       <Button
         className="w-full"
         onClick={() => calculateFootprint.mutate({ housingEnergy, travel })}
-        disabled={calculateFootprint.isPending}
+        disabled={isSubmitDisabled}
       >
         {calculateFootprint.isPending ? (
           <Loader2 className="size-4 animate-spin" />

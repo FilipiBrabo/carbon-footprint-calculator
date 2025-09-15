@@ -1,5 +1,6 @@
 import { TRPCError } from "@trpc/server";
-import type { RouterInput } from "../../_app";
+import type z from "zod";
+import type { housingEnergySchema } from "@/schemas/housing-energy";
 import type { CategoryFootprintResult } from "../category-registry";
 import type { EMISSION_FACTORS } from "../emission-factors";
 
@@ -7,7 +8,7 @@ import type { EMISSION_FACTORS } from "../emission-factors";
  * Calculates the footprint for the housing category and return the total yearly footprint
  */
 export function calculateHousingEnergyFootprint(
-  input: RouterInput["footprintCalculator"]["calculate"]["housingEnergy"],
+  input: z.output<typeof housingEnergySchema>,
   emissionFactors: typeof EMISSION_FACTORS,
 ): CategoryFootprintResult {
   // Iterate over every subcategory of the housing category and calculate the footprint

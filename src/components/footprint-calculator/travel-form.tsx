@@ -13,7 +13,7 @@ import { FootprintFormField } from "./footprint-form-field";
 
 const formSchema = travelSchema.required();
 
-export type TravelFormSchema = z.infer<typeof formSchema>;
+export type TravelFormSchema = z.input<typeof formSchema>;
 
 export function TravelForm() {
   const { travel, setTravel } = useFootprintCalculatorStore((state) => state);
@@ -21,6 +21,31 @@ export function TravelForm() {
   const form = useForm<TravelFormSchema>({
     resolver: zodResolver(formSchema),
     defaultValues: {
+      car: {
+        value: "",
+        unit: "miles",
+        yearly: false,
+      },
+      bus: {
+        value: "",
+        unit: "miles",
+        yearly: false,
+      },
+      metro: {
+        value: "",
+        unit: "miles",
+        yearly: false,
+      },
+      rail: {
+        value: "",
+        unit: "miles",
+        yearly: false,
+      },
+      flight: {
+        value: "",
+        unit: "miles",
+        yearly: false,
+      },
       ...travel,
     },
   });

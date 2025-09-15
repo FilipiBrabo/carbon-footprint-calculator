@@ -13,7 +13,7 @@ import { FootprintFormField } from "./footprint-form-field";
 
 const formSchema = housingEnergySchema.required();
 
-export type HousingEnergyFormSchema = z.infer<typeof formSchema>;
+export type HousingEnergyFormSchema = z.input<typeof formSchema>;
 
 export function HousingEnergyForm() {
   const { housingEnergy, setHousingEnergy } = useFootprintCalculatorStore(
@@ -22,7 +22,38 @@ export function HousingEnergyForm() {
 
   const form = useForm<HousingEnergyFormSchema>({
     resolver: zodResolver(formSchema),
+    // Note: In order to initialize the fields empty we need to use an empty string as the value
     defaultValues: {
+      electricity: {
+        value: "",
+        unit: "kWh",
+        yearly: false,
+      },
+      naturalGas: {
+        value: "",
+        unit: "therm",
+        yearly: false,
+      },
+      fuelOil: {
+        value: "",
+        unit: "gallon",
+        yearly: false,
+      },
+      lpg: {
+        value: "",
+        unit: "gallon",
+        yearly: false,
+      },
+      waste: {
+        value: "",
+        unit: "pounds",
+        yearly: false,
+      },
+      water: {
+        value: "",
+        unit: "gallon",
+        yearly: false,
+      },
       ...housingEnergy,
     },
   });

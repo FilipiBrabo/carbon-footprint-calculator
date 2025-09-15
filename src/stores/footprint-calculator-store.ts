@@ -1,28 +1,11 @@
+import type z from "zod";
 import { createStore } from "zustand/vanilla";
-import type { FieldUnits, UNITS_MAP } from "@/lib/utils";
-
-type FootprintField<T extends keyof typeof UNITS_MAP> = {
-  value: number;
-  unit: FieldUnits<T>;
-  yearly: boolean;
-};
+import type { housingEnergySchema } from "@/schemas/housing-energy";
+import type { travelSchema } from "@/schemas/travel";
 
 export type FootprintCalculatorState = {
-  housingEnergy: {
-    electricity: FootprintField<"electricity">;
-    naturalGas: FootprintField<"naturalGas">;
-    fuelOil: FootprintField<"fuelOil">;
-    lpg: FootprintField<"lpg">;
-    waste: FootprintField<"waste">;
-    water: FootprintField<"water">;
-  };
-  travel: {
-    car: FootprintField<"car">;
-    bus: FootprintField<"bus">;
-    metro: FootprintField<"metro">;
-    rail: FootprintField<"rail">;
-    flight: FootprintField<"flight">;
-  };
+  housingEnergy: z.input<typeof housingEnergySchema>;
+  travel: z.input<typeof travelSchema>;
 };
 
 export type FootprintCalculatorActions = {
@@ -36,65 +19,8 @@ export type FootprintCalculatorStore = FootprintCalculatorState &
   FootprintCalculatorActions;
 
 export const defaultInitState: FootprintCalculatorState = {
-  housingEnergy: {
-    electricity: {
-      value: 0,
-      unit: "kWh",
-      yearly: false,
-    },
-    naturalGas: {
-      value: 0,
-      unit: "therm",
-      yearly: false,
-    },
-    fuelOil: {
-      value: 0,
-      unit: "gallon",
-      yearly: false,
-    },
-    lpg: {
-      value: 0,
-      unit: "gallon",
-      yearly: false,
-    },
-    waste: {
-      value: 0,
-      unit: "pounds",
-      yearly: false,
-    },
-    water: {
-      value: 0,
-      unit: "gallon",
-      yearly: false,
-    },
-  },
-  travel: {
-    car: {
-      value: 0,
-      unit: "miles",
-      yearly: false,
-    },
-    bus: {
-      value: 0,
-      unit: "miles",
-      yearly: false,
-    },
-    metro: {
-      value: 0,
-      unit: "miles",
-      yearly: false,
-    },
-    rail: {
-      value: 0,
-      unit: "miles",
-      yearly: false,
-    },
-    flight: {
-      value: 0,
-      unit: "miles",
-      yearly: false,
-    },
-  },
+  housingEnergy: {},
+  travel: {},
 };
 
 export const createFootprintCalculatorStore = (

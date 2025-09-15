@@ -45,7 +45,12 @@ export function FootprintFormField({
                   type="number"
                   value={field.value}
                   min={0}
-                  onChange={(e) => field.onChange(Number(e.target.value))}
+                  onChange={(e) => {
+                    if (e.target.value === "") {
+                      return field.onChange("");
+                    }
+                    return field.onChange(Number(e.target.value));
+                  }}
                 />
               </FormControl>
               <FormMessage />
