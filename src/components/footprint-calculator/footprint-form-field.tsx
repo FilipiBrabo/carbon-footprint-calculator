@@ -28,13 +28,13 @@ export function FootprintFormField({
   >();
 
   return (
-    <div className="space-y-2">
-      <div className="flex flex-row gap-2 items-end">
+    <div className="space-y-2 ">
+      <div className="flex flex-row gap-2 items-end ">
         <FormField
           control={control}
           name={`${fieldName}.value`}
           render={({ field }) => (
-            <FormItem>
+            <FormItem className="flex-1">
               <FormLabel>
                 <Icon className="size-4" />
                 {label}
@@ -72,7 +72,7 @@ export function FootprintFormField({
         control={control}
         name={`${fieldName}.yearly`}
         render={({ field }) => (
-          <FormItem className="text-sm text-muted-foreground">
+          <FormItem className="text-muted-foreground">
             <FormControl>
               <RadioGroup
                 className="flex flex-row items-center gap-4"
@@ -83,13 +83,13 @@ export function FootprintFormField({
                   <FormControl>
                     <RadioGroupItem value="monthly" />
                   </FormControl>
-                  <FormLabel className="font-normal">Monthly</FormLabel>
+                  <FormLabel className="font-normal text-xs">Monthly</FormLabel>
                 </FormItem>
                 <FormItem className="flex items-center gap-1 space-y-0">
                   <FormControl>
                     <RadioGroupItem value="yearly" />
                   </FormControl>
-                  <FormLabel className="font-normal">Yearly</FormLabel>
+                  <FormLabel className="font-normal text-xs">Yearly</FormLabel>
                 </FormItem>
               </RadioGroup>
             </FormControl>

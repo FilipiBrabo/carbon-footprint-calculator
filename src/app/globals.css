@@ -120,3 +120,8 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* Prevent layout shift when scrollbar is hidden/shown */
+html {
+  scrollbar-gutter: stable;
+}
