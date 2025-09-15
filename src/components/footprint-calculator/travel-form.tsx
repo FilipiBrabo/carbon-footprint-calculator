@@ -4,6 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Bus, Car, Plane, Train } from "lucide-react";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
+import { useDebouncedCallback } from "use-debounce";
 import type { z } from "zod";
 import { Form } from "@/components/ui/form";
 import { useFootprintCalculatorStore } from "@/providers/footprint-calculator-store-provider";
@@ -15,7 +16,7 @@ const formSchema = travelSchema.required();
 export type TravelFormSchema = z.infer<typeof formSchema>;
 
 export function TravelForm() {
-  const { travel } = useFootprintCalculatorStore((state) => state);
+  const { travel, setTravel } = useFootprintCalculatorStore((state) => state);
 
   const form = useForm<TravelFormSchema>({
     resolver: zodResolver(formSchema),
@@ -24,15 +25,23 @@ export function TravelForm() {
     },
   });
 
-  const { reset } = form;
+  const debouncedUpdate = useDebouncedCallback(
+    (values: TravelFormSchema) => setTravel(values),
+    200,
+  );
 
-  // On the initial render, store values are not defined.
-  // This effect ensures that the form is reset to the store values.
   useEffect(() => {
-    reset({
-      ...travel,
+    const unsubscribe = form.subscribe({
+      formState: { values: true },
+      callback: ({ values }) => {
+        debouncedUpdate(values as TravelFormSchema);
+      },
     });
-  }, [travel, reset]);
+
+    return () => {
+      unsubscribe();
+    };
+  }, [debouncedUpdate, form.subscribe]);
 
   return (
     <Form {...form}>

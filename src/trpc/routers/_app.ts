@@ -1,4 +1,4 @@
-import type { inferRouterInputs } from "@trpc/server";
+import type { inferRouterInputs, inferRouterOutputs } from "@trpc/server";
 import { z } from "zod";
 import { publicProcedure, router } from "../init";
 import { footprintCalculatorRouter } from "./footprint-calculator";
@@ -21,3 +21,4 @@ export const appRouter = router({
 // export type definition of API
 export type AppRouter = typeof appRouter;
 export type RouterInput = inferRouterInputs<AppRouter>;
+export type RouterOutput = inferRouterOutputs<AppRouter>;

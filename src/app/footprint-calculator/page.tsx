@@ -4,6 +4,7 @@ import { useMutation } from "@tanstack/react-query";
 import { Bus, Home, Loader2 } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { HousingEnergyForm } from "@/components/footprint-calculator/housing-energy-form";
+import { useResultsDialog } from "@/components/footprint-calculator/results-dialog";
 import { TravelForm } from "@/components/footprint-calculator/travel-form";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -11,21 +12,29 @@ import { useFootprintCalculatorStore } from "@/providers/footprint-calculator-st
 import { useTRPC } from "@/trpc/client";
 
 export default function Page() {
-  const trpc = useTRPC();
   const router = useRouter();
-  const searchParams = useSearchParams();
+
   const { housingEnergy, travel } = useFootprintCalculatorStore(
     (state) => state,
   );
 
+  const searchParams = useSearchParams();
   const activeTab = searchParams.get("tab") || "home-energy";
 
+  const trpc = useTRPC();
   const calculateFootprint = useMutation(
-    trpc.footprintCalculator.calculate.mutationOptions(),
+    trpc.footprintCalculator.calculate.mutationOptions({
+      onSuccess: (results) => {
+        showResults(results);
+      },
+    }),
   );
+
+  const { open: showResults, dialog } = useResultsDialog();
 
   return (
     <div className="space-y-8">
+      {dialog}
       <Tabs
         value={activeTab}
         onValueChange={(value) =>
