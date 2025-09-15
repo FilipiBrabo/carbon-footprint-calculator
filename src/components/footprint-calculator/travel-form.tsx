@@ -45,7 +45,7 @@ export function TravelForm() {
 
   return (
     <Form {...form}>
-      <form className="space-y-4">
+      <form className="space-y-6">
         <FootprintFormField fieldName="car" label="Car" icon={Car} />
 
         <FootprintFormField fieldName="bus" label="Bus" icon={Bus} />

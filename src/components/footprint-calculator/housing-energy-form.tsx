@@ -47,7 +47,7 @@ export function HousingEnergyForm() {
 
   return (
     <Form {...form}>
-      <form className="space-y-8">
+      <form className="space-y-6">
         <FootprintFormField
           fieldName="electricity"
           label="Electricity"
