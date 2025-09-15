@@ -1,31 +1,38 @@
 import z from "zod";
 import { housingEnergySchema } from "@/schemas/housing-energy";
+import { travelSchema } from "@/schemas/travel";
 import { publicProcedure, router } from "../../init";
-import { calculateHousingEnergy } from "./categories/housing-energy";
+import { CATEGORY_REGISTRY } from "./category-registry";
 import { EMISSION_FACTORS } from "./emission-factors";
-
-// TODO: fix this type
-const registry: Record<string, (input: any, emissionFactors: any) => number> = {
-  housingEnergy: calculateHousingEnergy,
-};
 
 export const footprintCalculatorRouter = router({
   calculate: publicProcedure
     .input(
       z.object({
         housingEnergy: housingEnergySchema,
+        travel: travelSchema,
       }),
     )
     .mutation(({ input }) => {
-      // TODO: this will need to be updated to support multiple categories
-      const calculator = registry.housingEnergy;
-      const result = calculator(input.housingEnergy, EMISSION_FACTORS);
+      const results: Record<string, number> = {};
+      let totalResult = 0;
+
+      for (const [categoryName, categoryData] of Object.entries(input)) {
+        const footprintCalculator = CATEGORY_REGISTRY[categoryName];
+
+        if (footprintCalculator && categoryData) {
+          const categoryResult = footprintCalculator(
+            categoryData,
+            EMISSION_FACTORS,
+          );
+          results[categoryName] = categoryResult;
+          totalResult += categoryResult;
+        }
+      }
 
       return {
-        totalKgCO2e: result,
-        byCategory: {
-          housingEnergy: result,
-        },
+        totalKgCO2e: totalResult,
+        byCategory: results,
       };
     }),
 });

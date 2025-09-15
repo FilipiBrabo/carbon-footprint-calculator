@@ -2,7 +2,6 @@ import type { LucideIcon } from "lucide-react";
 import { useFormContext } from "react-hook-form";
 import {
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -12,20 +11,21 @@ import { Input } from "@/components/ui/input";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { UNITS_MAP } from "@/lib/utils";
 import type { HousingEnergyFormSchema } from "./housing-energy-form";
+import type { TravelFormSchema } from "./travel-form";
 import { UnitSelect } from "./unit-select";
 
 export function FootprintFormField({
   icon: Icon,
   label,
   fieldName,
-  description,
 }: {
   label: string;
   icon: LucideIcon;
-  fieldName: keyof HousingEnergyFormSchema;
-  description?: string;
+  fieldName: keyof HousingEnergyFormSchema | keyof TravelFormSchema;
 }) {
-  const { control } = useFormContext<HousingEnergyFormSchema>();
+  const { control } = useFormContext<
+    HousingEnergyFormSchema | TravelFormSchema
+  >();
 
   return (
     <div className="space-y-2">
@@ -47,9 +47,6 @@ export function FootprintFormField({
                   onChange={(e) => field.onChange(Number(e.target.value))}
                 />
               </FormControl>
-              {description ? (
-                <FormDescription>{description}</FormDescription>
-              ) : null}
               <FormMessage />
             </FormItem>
           )}

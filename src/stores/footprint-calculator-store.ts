@@ -1,4 +1,3 @@
-import { persist } from "zustand/middleware";
 import { createStore } from "zustand/vanilla";
 import type { FieldUnits, UNITS_MAP } from "@/lib/utils";
 
@@ -17,14 +16,20 @@ export type FootprintCalculatorState = {
     waste: FootprintField<"waste">;
     water: FootprintField<"water">;
   };
-  transportation: string;
+  travel: {
+    car: FootprintField<"car">;
+    bus: FootprintField<"bus">;
+    metro: FootprintField<"metro">;
+    rail: FootprintField<"rail">;
+    flight: FootprintField<"flight">;
+  };
 };
 
 export type CounterActions = {
   setHousingEnergy: (
     housingEnergy: FootprintCalculatorState["housingEnergy"],
   ) => void;
-  setTransportation: (transportation: string) => void;
+  setTravel: (travel: FootprintCalculatorState["travel"]) => void;
 };
 
 export type FootprintCalculatorStore = FootprintCalculatorState &
@@ -63,7 +68,33 @@ export const defaultInitState: FootprintCalculatorState = {
       yearly: false,
     },
   },
-  transportation: "",
+  travel: {
+    car: {
+      value: 0,
+      unit: "miles",
+      yearly: false,
+    },
+    bus: {
+      value: 0,
+      unit: "miles",
+      yearly: false,
+    },
+    metro: {
+      value: 0,
+      unit: "miles",
+      yearly: false,
+    },
+    rail: {
+      value: 0,
+      unit: "miles",
+      yearly: false,
+    },
+    flight: {
+      value: 0,
+      unit: "miles",
+      yearly: false,
+    },
+  },
 };
 
 export const createFootprintCalculatorStore = (
@@ -74,7 +105,7 @@ export const createFootprintCalculatorStore = (
     (set) => ({
       ...initState,
       setHousingEnergy: (housingEnergy) => set({ housingEnergy }),
-      setTransportation: (transportation: string) => set({ transportation }),
+      setTravel: (travel) => set({ travel }),
     }),
     // {
     //   name: "footprint-calculator",

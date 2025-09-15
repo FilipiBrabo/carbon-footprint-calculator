@@ -12,6 +12,11 @@ export const UNITS_MAP = {
   lpg: ["gallon", "litre"],
   waste: ["pounds", "tons"],
   water: ["gallon", "hcf"],
+  car: ["miles", "km"],
+  bus: ["miles", "km"],
+  metro: ["miles", "km"],
+  rail: ["miles", "km"],
+  flight: ["miles", "km"],
 } as const;
 
 export type FieldUnits<T extends keyof typeof UNITS_MAP> =

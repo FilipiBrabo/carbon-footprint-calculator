@@ -25,4 +25,24 @@ export const EMISSION_FACTORS = {
     gallon: 0.003785, // https://shrinkthatfootprint.com/calculate-your-carbon-footprint/
     hcf: 2.833, // https://shrinkthatfootprint.com/calculate-your-carbon-footprint/
   },
+  car: {
+    km: 0.499, // https://shrinkthatfootprint.com/calculate-your-carbon-footprint/
+    miles: 0.803, // https://shrinkthatfootprint.com/calculate-your-carbon-footprint/
+  },
+  bus: {
+    km: 0.105, // https://shrinkthatfootprint.com/calculate-your-carbon-footprint/
+    miles: 0.169, // https://shrinkthatfootprint.com/calculate-your-carbon-footprint/
+  },
+  metro: {
+    km: 0.065, // https://shrinkthatfootprint.com/calculate-your-carbon-footprint/
+    miles: 0.105, // https://shrinkthatfootprint.com/calculate-your-carbon-footprint/
+  },
+  rail: {
+    km: 0.041, // https://shrinkthatfootprint.com/calculate-your-carbon-footprint/
+    miles: 0.066, // https://shrinkthatfootprint.com/calculate-your-carbon-footprint/
+  },
+  flight: {
+    km: 0.156, // https://shrinkthatfootprint.com/calculate-your-carbon-footprint/
+    miles: 0.251, // https://shrinkthatfootprint.com/calculate-your-carbon-footprint/
+  },
 };

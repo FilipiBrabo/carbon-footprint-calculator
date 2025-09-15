@@ -1,68 +1,61 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Bus, Car, Plane, Train } from "lucide-react";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
+import type { z } from "zod";
 import { Button } from "@/components/ui/button";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
+import { Form } from "@/components/ui/form";
 import { useFootprintCalculatorStore } from "@/providers/footprint-calculator-store-provider";
+import { travelSchema } from "@/schemas/travel";
+import { FootprintFormField } from "./footprint-form-field";
 
-const formSchema = z.object({
-  transportation: z.string(),
-});
+const formSchema = travelSchema.required();
+
+export type TravelFormSchema = z.infer<typeof formSchema>;
 
 export function TravelForm() {
-  const { transportation, setTransportation } = useFootprintCalculatorStore(
-    (state) => state,
-  );
+  const { setTravel, travel } = useFootprintCalculatorStore((state) => state);
 
-  const state = useFootprintCalculatorStore((state) => state);
-
-  const form = useForm<z.infer<typeof formSchema>>({
+  const form = useForm<TravelFormSchema>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      transportation,
+      ...travel,
     },
   });
 
   const { reset } = form;
 
+  // On the initial render, store values are not defined.
+  // This effect ensures that the form is reset to the store values.
   useEffect(() => {
     reset({
-      transportation,
+      ...travel,
     });
-  }, [transportation, reset]);
+  }, [travel, reset]);
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    setTransportation(values.transportation);
-    console.log("state", { ...state, transportation: values.transportation });
+  function handleSubmit(values: z.infer<typeof formSchema>) {
+    setTravel(values);
   }
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-        <FormField
-          control={form.control}
-          name="transportation"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Transportation</FormLabel>
-              <FormControl>
-                <Input {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
+      <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
+        <FootprintFormField fieldName="car" label="Car" icon={Car} />
+
+        <FootprintFormField fieldName="bus" label="Bus" icon={Bus} />
+
+        <FootprintFormField
+          fieldName="metro"
+          label="Metro/Subway"
+          icon={Train}
         />
+
+        <FootprintFormField fieldName="rail" label="Rail/Train" icon={Train} />
+
+        <FootprintFormField fieldName="flight" label="Flight" icon={Plane} />
+
         <Button type="submit">Submit</Button>
       </form>
     </Form>
