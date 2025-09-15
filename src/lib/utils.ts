@@ -1,6 +1,24 @@
-import { clsx, type ClassValue } from "clsx"
-import { twMerge } from "tailwind-merge"
+import { type ClassValue, clsx } from "clsx";
+import { twMerge } from "tailwind-merge";
 
 export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs))
+  return twMerge(clsx(inputs));
+}
+
+export const UNITS_MAP = {
+  electricity: ["kWh"],
+  naturalGas: ["therm", "mmBtu"],
+  fuelOil: ["gallon", "litre"],
+  lpg: ["gallon", "litre"],
+  waste: ["pounds", "tons"],
+  water: ["gallon", "hcf"],
+} as const;
+
+export type FieldUnits<T extends keyof typeof UNITS_MAP> =
+  (typeof UNITS_MAP)[T][number];
+
+export function getUnitsForField<T extends keyof typeof UNITS_MAP>(
+  field: T,
+): readonly FieldUnits<T>[] {
+  return UNITS_MAP[field];
 }
