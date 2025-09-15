@@ -47,7 +47,9 @@ export function CategoryPieChart({
   return (
     <ChartContainer
       config={chartConfig}
-      className="mx-auto aspect-square w-full max-w-[320px]"
+      className={`mx-auto aspect-square w-full max-w-[320px] ${
+        onSelect ? "[&_.recharts-sector]:cursor-pointer" : ""
+      }`}
     >
       <PieChart>
         <ChartTooltip
