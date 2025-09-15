@@ -5,7 +5,6 @@ import { Bus, Car, Plane, Train } from "lucide-react";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import type { z } from "zod";
-import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import { useFootprintCalculatorStore } from "@/providers/footprint-calculator-store-provider";
 import { travelSchema } from "@/schemas/travel";
@@ -16,7 +15,7 @@ const formSchema = travelSchema.required();
 export type TravelFormSchema = z.infer<typeof formSchema>;
 
 export function TravelForm() {
-  const { setTravel, travel } = useFootprintCalculatorStore((state) => state);
+  const { travel } = useFootprintCalculatorStore((state) => state);
 
   const form = useForm<TravelFormSchema>({
     resolver: zodResolver(formSchema),
@@ -35,13 +34,9 @@ export function TravelForm() {
     });
   }, [travel, reset]);
 
-  function handleSubmit(values: z.infer<typeof formSchema>) {
-    setTravel(values);
-  }
-
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
+      <form className="space-y-4">
         <FootprintFormField fieldName="car" label="Car" icon={Car} />
 
         <FootprintFormField fieldName="bus" label="Bus" icon={Bus} />
@@ -55,8 +50,6 @@ export function TravelForm() {
         <FootprintFormField fieldName="rail" label="Rail/Train" icon={Train} />
 
         <FootprintFormField fieldName="flight" label="Flight" icon={Plane} />
-
-        <Button type="submit">Submit</Button>
       </form>
     </Form>
   );
