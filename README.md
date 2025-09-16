@@ -2,7 +2,9 @@
 
 A simple carbon footprint calculator. It collects home energy and transportation usage, converts inputs using emission factors, and presents totals and breakdowns.
 
-![hero](github.png)
+<p align="center">
+  <img src="github.png" alt="hero" height="400" />
+</p>
 
 ### Quick start
 
