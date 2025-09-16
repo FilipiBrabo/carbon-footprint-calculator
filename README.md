@@ -1,36 +1,36 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+## Carbon Footprint Calculator
 
-## Getting Started
+A simple carbon footprint calculator. It collects home energy and transportation usage, converts inputs using emission factors, and presents totals and breakdowns.
 
-First, run the development server:
+![hero](github.png)
+
+### Quick start
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
+pnpm install
 pnpm dev
-# or
-bun dev
+pnpm test     # unit and integration tests
+pnpm test:e2e # e2e with Playwright
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### App Architecture
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- **Framework**: [Next.js App Router](https://nextjs.org)
+- **API**: [tRPC](https://trpc.io)
+- **UI**: [Shadcn](https://ui.shadcn.com)
+- **Tests**: [Vitest](https://vitest.dev), [Playwright](https://playwright.dev)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+---
 
-## Learn More
+## Project structure overview
 
-To learn more about Next.js, take a look at the following resources:
+```text
+src/
+  app/                     # Frontend (Next.js App Router)
+  components/
+    ui/                    # Shadcn UI primitives
+    footprint-calculator/  # UI components
+  trpc/                    # tRPC server/router (API)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+tests/                     # e2e tests
+```
