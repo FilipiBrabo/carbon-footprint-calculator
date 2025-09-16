@@ -36,6 +36,7 @@
     "superjson": "^2.2.2",
     "tailwind-merge": "^3.3.1",
     "use-debounce": "^10.0.6",
+    "vite-tsconfig-paths": "^5.1.4",
     "zod": "^4.1.8",
     "zustand": "^5.0.8"
   },
