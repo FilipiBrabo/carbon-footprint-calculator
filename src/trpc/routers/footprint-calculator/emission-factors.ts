@@ -1,48 +1,49 @@
 // Emission factors: all values are kgCO2e per input unit
-// The comments are the sources of the values.
-// Note: This values were scraped using AI. Not sure if they are accurate.
+// Note: This values were scraped using AI from:
+//  - https://www.epa.gov/energy/greenhouse-gas-equivalencies-calculator-calculations-and-references/
+//  - https://shrinkthatfootprint.com/calculate-your-carbon-footprint/
 export const EMISSION_FACTORS = {
   electricity: {
-    kWh: 0.388, // https://www.epa.gov/energy/greenhouse-gas-equivalencies-calculator-calculations-and-references/
+    kWh: 0.388,
   },
   naturalGas: {
-    therm: 5.311, //https://www.epa.gov/system/files/documents/2023-03/ghg_emission_factors_hub.pdf
-    mmBtu: 53.11, // https://www.epa.gov/system/files/documents/2023-03/ghg_emission_factors_hub.pdf
+    therm: 5.311,
+    mmBtu: 53.11,
   },
   fuelOil: {
-    gallon: 10.21, // https://www.epa.gov/system/files/documents/2023-03/ghg_emission_factors_hub.pdf
-    litre: 2.7, // https://www.epa.gov/system/files/documents/2023-03/ghg_emission_factors_hub.pdf,
+    gallon: 10.21,
+    litre: 2.7,
   },
   lpg: {
-    gallon: 5.72, // https://www.epa.gov/system/files/documents/2023-03/ghg_emission_factors_hub.pdf
-    litre: 1.51, // https://www.epa.gov/system/files/documents/2023-03/ghg_emission_factors_hub.pdf
+    gallon: 5.72,
+    litre: 1.51,
   },
   waste: {
-    pounds: 0.045, // https://shrinkthatfootprint.com/calculate-your-carbon-footprint/
-    tons: 90, // https://shrinkthatfootprint.com/calculate-your-carbon-footprint/
+    pounds: 0.045,
+    tons: 90,
   },
   water: {
-    gallon: 0.003785, // https://shrinkthatfootprint.com/calculate-your-carbon-footprint/
-    hcf: 2.833, // https://shrinkthatfootprint.com/calculate-your-carbon-footprint/
+    gallon: 0.003785,
+    hcf: 2.833,
   },
   car: {
-    km: 0.499, // https://shrinkthatfootprint.com/calculate-your-carbon-footprint/
-    miles: 0.803, // https://shrinkthatfootprint.com/calculate-your-carbon-footprint/
+    km: 0.499,
+    miles: 0.803,
   },
   bus: {
-    km: 0.105, // https://shrinkthatfootprint.com/calculate-your-carbon-footprint/
-    miles: 0.169, // https://shrinkthatfootprint.com/calculate-your-carbon-footprint/
+    km: 0.105,
+    miles: 0.169,
   },
   metro: {
-    km: 0.065, // https://shrinkthatfootprint.com/calculate-your-carbon-footprint/
-    miles: 0.105, // https://shrinkthatfootprint.com/calculate-your-carbon-footprint/
+    km: 0.065,
+    miles: 0.105,
   },
   rail: {
-    km: 0.041, // https://shrinkthatfootprint.com/calculate-your-carbon-footprint/
-    miles: 0.066, // https://shrinkthatfootprint.com/calculate-your-carbon-footprint/
+    km: 0.041,
+    miles: 0.066,
   },
   flight: {
-    km: 0.156, // https://shrinkthatfootprint.com/calculate-your-carbon-footprint/
-    miles: 0.251, // https://shrinkthatfootprint.com/calculate-your-carbon-footprint/
+    km: 0.156,
+    miles: 0.251,
   },
 };
